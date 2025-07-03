@@ -33,6 +33,7 @@ export class ProductosComponent {
   }
 
   obtenerProductos(): void {
+    console.log("SI ENTRO");
     this.http.get<any[]>('http://localhost:8080/api/productos')
       .subscribe({
         next: (data) => this.productos = data,
@@ -41,7 +42,6 @@ export class ProductosComponent {
   }
 
   crearProducto(): void {
-    console.log("SI ENTRO");
     this.http.post('http://localhost:8080/api/productos', this.nuevoProducto)
       .subscribe({
         next: () => {

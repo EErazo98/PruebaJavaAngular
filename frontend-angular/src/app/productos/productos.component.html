@@ -1,49 +1,69 @@
-<div class="producto-container">
-  <h2 class="titulo">Listado de Productos</h2>
+<div class="container mt-5 p-4 shadow rounded bg-white" style="max-width: 600px; margin: auto;">
+  <h2 class="text-center mb-4">Listado de Productos</h2>
 
-  <button class="boton-salir" (click)="logout()">Cerrar sesión</button>
+  <button (click)="logout()" class="btn btn-outline-secondary mb-3">Cerrar sesión</button>
 
-  <ul class="lista-productos" *ngIf="productos.length > 0; else sinProductos">
-    <li class="producto-item" *ngFor="let producto of productos">
-
-      <!-- Vista normal del producto -->
-      <div class="producto-info" *ngIf="productoEditando?.id !== producto.id">
-        <span class="producto-detalle">
-          <strong>{{ producto.nombre }}</strong> - ${{ producto.precio }} (Stock: {{ producto.stock }})
-        </span>
-        <div class="acciones">
-          <button class="btn-editar" (click)="iniciarEdicion(producto)">Editar</button>
-          <button class="btn-eliminar" (click)="eliminarProducto(producto.id)">Eliminar</button>
+  <ul class="list-group mb-4">
+    <li *ngFor="let producto of productos" class="list-group-item">
+      <div *ngIf="productoEditando?.id !== producto.id">
+        <div class="fw-bold">{{ producto.nombre }}</div>
+        {{ producto.descripcion }} - ${{ producto.precio }} (Stock: {{ producto.stock }})
+        <div class="mt-2">
+          <button class="btn btn-sm btn-primary me-2" (click)="iniciarEdicion(producto)">Editar</button>
+          <button class="btn btn-sm btn-danger" (click)="eliminarProducto(producto.id)">Eliminar</button>
         </div>
       </div>
 
-      <!-- Vista edición del producto -->
-      <div class="producto-edicion" *ngIf="productoEditando?.id === producto.id">
-        <input [(ngModel)]="productoEditando.nombre" placeholder="Nombre" />
-        <input [(ngModel)]="productoEditando.descripcion" placeholder="Descripción" />
-        <input type="number" [(ngModel)]="productoEditando.precio" placeholder="Precio" />
-        <input type="number" [(ngModel)]="productoEditando.stock" placeholder="Stock" />
-        <div class="acciones">
-          <button class="btn-guardar" (click)="guardarCambios()">Guardar</button>
-          <button class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+      <!-- Formulario de edición -->
+      <form *ngIf="productoEditando?.id === producto.id" (ngSubmit)="guardarCambios()">
+        <div class="form-group mt-2">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="productoEditando.nombre" name="editNombre" required>
         </div>
-      </div>
-
+        <div class="form-group mt-2">
+          <label>Descripción</label>
+          <input type="text" class="form-control" [(ngModel)]="productoEditando.descripcion" name="editDescripcion" required>
+        </div>
+        <div class="form-row mt-2">
+          <div class="col">
+            <label>Precio</label>
+            <input type="number" class="form-control" [(ngModel)]="productoEditando.precio" name="editPrecio" required>
+          </div>
+          <div class="col">
+            <label>Stock</label>
+            <input type="number" class="form-control" [(ngModel)]="productoEditando.stock" name="editStock" required>
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-success me-2">Guardar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </form>
     </li>
   </ul>
 
-  <ng-template #sinProductos>
-    <p class="mensaje-vacio">No hay productos disponibles.</p>
-  </ng-template>
+  <hr>
 
-  <hr />
-
-  <h3 class="subtitulo">Agregar Producto</h3>
-  <form class="formulario" (ngSubmit)="crearProducto()" #form="ngForm">
-    <input name="nombre" [(ngModel)]="nuevoProducto.nombre" placeholder="Nombre" required>
-    <input name="descripcion" [(ngModel)]="nuevoProducto.descripcion" placeholder="Descripción" required>
-    <input name="precio" [(ngModel)]="nuevoProducto.precio" type="number" placeholder="Precio" required>
-    <input name="stock" [(ngModel)]="nuevoProducto.stock" type="number" placeholder="Stock" required>
-    <button type="submit" class="btn-agregar">Agregar</button>
+  <h3 class="mb-3">Agregar Producto</h3>
+  <form (ngSubmit)="crearProducto()" class="row g-3">
+    <div class="col-12">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" [(ngModel)]="nuevoProducto.nombre" name="nombre" required>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Descripción</label>
+      <input type="text" class="form-control" [(ngModel)]="nuevoProducto.descripcion" name="descripcion" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Precio</label>
+      <input type="number" class="form-control" [(ngModel)]="nuevoProducto.precio" name="precio" required min="0">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Stock</label>
+      <input type="number" class="form-control" [(ngModel)]="nuevoProducto.stock" name="stock" required min="0">
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary w-100">Agregar</button>
+    </div>
   </form>
 </div>

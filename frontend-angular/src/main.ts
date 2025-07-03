@@ -3,11 +3,11 @@ import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
-import { JwtInterceptor } from './app/auth/jwt-interceptor.service';
+import { JwtInterceptorService } from './app/auth/jwt-interceptor.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptors([JwtInterceptor])),
+    provideHttpClient(withInterceptors([JwtInterceptorService])),
     provideRouter(routes)
   ]
 });
