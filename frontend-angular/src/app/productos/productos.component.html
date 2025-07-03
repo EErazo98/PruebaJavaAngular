@@ -1,36 +1,49 @@
-<h2>Listado de Productos</h2>
-<button (click)="logout()">Cerrar sesión</button>
+<div class="producto-container">
+  <h2 class="titulo">Listado de Productos</h2>
 
-<ul *ngIf="productos.length > 0; else sinProductos">
-    <li *ngFor="let producto of productos">
-        <div *ngIf="productoEditando?.id !== producto.id">
-            <strong>{{ producto.nombre }}</strong> - ${{ producto.precio }} (Stock: {{ producto.stock }})
-            <button (click)="iniciarEdicion(producto)">Editar</button>
-            <button (click)="eliminarProducto(producto.id)">Eliminar</button>
-        </div>
+  <button class="boton-salir" (click)="logout()">Cerrar sesión</button>
 
-        <div *ngIf="productoEditando?.id === producto.id">
-            <input [(ngModel)]="productoEditando.nombre" placeholder="Nombre" />
-            <input [(ngModel)]="productoEditando.descripcion" placeholder="Descripción" />
-            <input type="number" [(ngModel)]="productoEditando.precio" placeholder="Precio" />
-            <input type="number" [(ngModel)]="productoEditando.stock" placeholder="Stock" />
-            <button (click)="guardarCambios()">Guardar</button>
-            <button (click)="cancelarEdicion()">Cancelar</button>
+  <ul class="lista-productos" *ngIf="productos.length > 0; else sinProductos">
+    <li class="producto-item" *ngFor="let producto of productos">
+
+      <!-- Vista normal del producto -->
+      <div class="producto-info" *ngIf="productoEditando?.id !== producto.id">
+        <span class="producto-detalle">
+          <strong>{{ producto.nombre }}</strong> - ${{ producto.precio }} (Stock: {{ producto.stock }})
+        </span>
+        <div class="acciones">
+          <button class="btn-editar" (click)="iniciarEdicion(producto)">Editar</button>
+          <button class="btn-eliminar" (click)="eliminarProducto(producto.id)">Eliminar</button>
         </div>
+      </div>
+
+      <!-- Vista edición del producto -->
+      <div class="producto-edicion" *ngIf="productoEditando?.id === producto.id">
+        <input [(ngModel)]="productoEditando.nombre" placeholder="Nombre" />
+        <input [(ngModel)]="productoEditando.descripcion" placeholder="Descripción" />
+        <input type="number" [(ngModel)]="productoEditando.precio" placeholder="Precio" />
+        <input type="number" [(ngModel)]="productoEditando.stock" placeholder="Stock" />
+        <div class="acciones">
+          <button class="btn-guardar" (click)="guardarCambios()">Guardar</button>
+          <button class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </div>
+
     </li>
+  </ul>
 
-</ul>
+  <ng-template #sinProductos>
+    <p class="mensaje-vacio">No hay productos disponibles.</p>
+  </ng-template>
 
-<ng-template #sinProductos>
-    <p>No hay productos disponibles.</p>
-</ng-template>
+  <hr />
 
-<hr />
-<h3>Agregar Producto</h3>
-<form (ngSubmit)="crearProducto()" #form="ngForm">
+  <h3 class="subtitulo">Agregar Producto</h3>
+  <form class="formulario" (ngSubmit)="crearProducto()" #form="ngForm">
     <input name="nombre" [(ngModel)]="nuevoProducto.nombre" placeholder="Nombre" required>
     <input name="descripcion" [(ngModel)]="nuevoProducto.descripcion" placeholder="Descripción" required>
     <input name="precio" [(ngModel)]="nuevoProducto.precio" type="number" placeholder="Precio" required>
     <input name="stock" [(ngModel)]="nuevoProducto.stock" type="number" placeholder="Stock" required>
-    <button type="submit">Agregar</button>
-</form>
+    <button type="submit" class="btn-agregar">Agregar</button>
+  </form>
+</div>
