@@ -1,0 +1,36 @@
+<h2>Listado de Productos</h2>
+<button (click)="logout()">Cerrar sesión</button>
+
+<ul *ngIf="productos.length > 0; else sinProductos">
+    <li *ngFor="let producto of productos">
+        <div *ngIf="productoEditando?.id !== producto.id">
+            <strong>{{ producto.nombre }}</strong> - ${{ producto.precio }} (Stock: {{ producto.stock }})
+            <button (click)="iniciarEdicion(producto)">Editar</button>
+            <button (click)="eliminarProducto(producto.id)">Eliminar</button>
+        </div>
+
+        <div *ngIf="productoEditando?.id === producto.id">
+            <input [(ngModel)]="productoEditando.nombre" placeholder="Nombre" />
+            <input [(ngModel)]="productoEditando.descripcion" placeholder="Descripción" />
+            <input type="number" [(ngModel)]="productoEditando.precio" placeholder="Precio" />
+            <input type="number" [(ngModel)]="productoEditando.stock" placeholder="Stock" />
+            <button (click)="guardarCambios()">Guardar</button>
+            <button (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+    </li>
+
+</ul>
+
+<ng-template #sinProductos>
+    <p>No hay productos disponibles.</p>
+</ng-template>
+
+<hr />
+<h3>Agregar Producto</h3>
+<form (ngSubmit)="crearProducto()" #form="ngForm">
+    <input name="nombre" [(ngModel)]="nuevoProducto.nombre" placeholder="Nombre" required>
+    <input name="descripcion" [(ngModel)]="nuevoProducto.descripcion" placeholder="Descripción" required>
+    <input name="precio" [(ngModel)]="nuevoProducto.precio" type="number" placeholder="Precio" required>
+    <input name="stock" [(ngModel)]="nuevoProducto.stock" type="number" placeholder="Stock" required>
+    <button type="submit">Agregar</button>
+</form>
