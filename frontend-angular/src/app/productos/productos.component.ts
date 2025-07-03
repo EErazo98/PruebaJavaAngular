@@ -41,6 +41,7 @@ export class ProductosComponent {
   }
 
   crearProducto(): void {
+    console.log("SI ENTRO");
     this.http.post('http://localhost:8080/api/productos', this.nuevoProducto)
       .subscribe({
         next: () => {
